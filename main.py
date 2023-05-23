@@ -1,16 +1,24 @@
-# This is a sample Python script.
+import nltk
+from nltk import word_tokenize
+from nltk.corpus import brown
 
-# Press Mayús+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+race1 = nltk.tag.str2tuple('race/NN')
+race2 = nltk.tag.str2tuple('race/VB')
+# Tamañon del brown corpus: 1161192
+bw = brown.tagged_words()
+lenBw = len(brown.tagged_words())
+fr1 = bw.count(race1)  # 94
+fr2 = bw.count(race2)  # 4
+# Es mas usado como noun que como verbo ya que fr1 > fr2
+#print(fr2)
 
+#unigram_tagger = nltk.tag.UnigramTagger(brown.tagged_sents(categories='news')[:5000])
+S = "The Secretariat is expected to race tomorrow."
+#print(unigram_tagger.tag(S_tok))         #NN
+S_tok = word_tokenize(S)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+brown_news = nltk.corpus.brown.tagged_sents(categories='news')[:5000]
+hmm_tagger = nltk.HiddenMarkovModelTagger.train(brown_news)
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+tagged_tokens = hmm_tagger.tag(S_tok)
+print(tagged_tokens)
